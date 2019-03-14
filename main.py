@@ -1,6 +1,7 @@
 import os
 import cv2
 import time
+import itertools
 
 
 def get_files(path):
@@ -9,16 +10,10 @@ def get_files(path):
 
 
 def display_images(repository, files):
-    i = 0
-    while True:
-
-        img = cv2.imread(os.path.join(repository, files[i]))
-        print(f"Printing {files[i]}")
+    for file in itertools.cycle(files):
+        img = cv2.imread(os.path.join(repository, file))
         cv2.imshow('img', img)
         time.sleep(2)
-        i = i + 1
-        if i == len(files):
-            i = 0
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     cv2.destroyAllWindows()
