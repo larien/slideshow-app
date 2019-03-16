@@ -21,7 +21,7 @@ def watermark(image):
 
     image[
         image_height-watermark_height:image_height,
-        image_width-watermark_width:image_width] = watermark
+        0:watermark_width] = watermark
 
     return image
 
@@ -40,12 +40,11 @@ def load(file):
 
 
 def show(image):
-    cv2.imshow('img', image)
+    cv2.imshow('showing_images', image)
     time.sleep(2)
 
 
 def display_images(files):
-
     for file in itertools.cycle(files):
         image = load(file)
 
@@ -62,7 +61,6 @@ def display_images(files):
 
 
 if __name__ == "__main__":
-
     files = get_files(repository)
 
     display_images(files)

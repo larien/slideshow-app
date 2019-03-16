@@ -10,7 +10,7 @@ Python app that transitions images from defined folder into the screen using ope
 
 [x] - Aplicar uma borda de 20px nas imagens;
 
-[ ] - Aplicar no canto inferior esquerdo uma marca d’agua para todas as imagens;
+[x] - Aplicar no canto inferior esquerdo uma marca d’agua para todas as imagens;
 
 [x] - Ao chegar na última imagem, voltar para a primeira;
 
