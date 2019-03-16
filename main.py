@@ -13,7 +13,7 @@ def get_files(path):
         return files
 
 
-def watermark_image(image):
+def watermark(image):
     watermark = cv2.imread(watermark_file)
 
     watermark_height, watermark_width = watermark.shape[:2]
@@ -26,32 +26,38 @@ def watermark_image(image):
     return image
 
 
-def border_image(image):
+def border(image):
     bordered_image = cv2.copyMakeBorder(
             image, 20, 20, 20, 20, cv2.BORDER_CONSTANT, value=color)
 
     return bordered_image
 
 
-def load_image(file):
+def load(file):
     image = cv2.imread(os.path.join(repository, file))
 
     return image
 
 
-def display_images(repository, files):
+def show(image):
+    cv2.imshow('img', image)
+    time.sleep(2)
+
+
+def display_images(files):
 
     for file in itertools.cycle(files):
-        image = load_image(file)
+        image = load(file)
 
-        bordered_image = border_image(image)
+        bordered_image = border(image)
 
-        watermarked_image = watermark_image(bordered_image)
+        watermarked_image = watermark(bordered_image)
 
-        cv2.imshow('img', watermarked_image)
-        time.sleep(2)
+        show(watermarked_image)
+
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+
     cv2.destroyAllWindows()
 
 
@@ -59,4 +65,4 @@ if __name__ == "__main__":
 
     files = get_files(repository)
 
-    display_images(repository, files)
+    display_images(files)
