@@ -9,18 +9,30 @@ def get_files(path):
         return files
 
 
+def watermark_image(image):
+    watermark = cv2.imread("watermark.png")
+
+    watermark_height, watermark_width = watermark.shape[:2]
+    image_height, image_width = image.shape[:2]
+
+    image[
+        image_height-watermark_height:image_height,
+        image_width-watermark_width:image_width] = watermark
+
+    return image
+
+
 def display_images(repository, files):
     BLUE = [255, 0, 0]
 
     for file in itertools.cycle(files):
         img = cv2.imread(os.path.join(repository, file))
-        bordered_img = cv2.copyMakeBorder(
+        bordered_image = cv2.copyMakeBorder(
             img, 20, 20, 20, 20, cv2.BORDER_CONSTANT, value=BLUE)
-        watermark = cv2.imread("watermark.png")
-        watermark_height, watermark_width = watermark.shape[:2]
-        img_height, img_width = img.shape[:2]
-        bordered_img[img_height-watermark_height:img_height, img_width-watermark_width:img_width] = watermark
-        cv2.imshow('img', bordered_img)
+
+        watermarked_image = watermark_image(bordered_image)
+        
+        cv2.imshow('img', watermarked_image)
         time.sleep(2)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
