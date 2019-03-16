@@ -44,15 +44,21 @@ def show(image):
     time.sleep(2)
 
 
+def apply(image):
+    bordered_image = border(image)
+
+    watermarked_image = watermark(bordered_image)
+
+    return watermarked_image
+
+
 def display_images(files):
     for file in itertools.cycle(files):
         image = load(file)
 
-        bordered_image = border(image)
+        applied_image = apply(image)
 
-        watermarked_image = watermark(bordered_image)
-
-        show(watermarked_image)
+        show(applied_image)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
