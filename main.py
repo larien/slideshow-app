@@ -2,6 +2,7 @@ import os
 import cv2
 import time
 import itertools
+import random
 
 repository = f"{os.getcwd()}/images"
 watermark_file = "watermark.png"
@@ -52,13 +53,35 @@ def apply(image):
     return watermarked_image
 
 
+def get_next_image(file, files):
+    index = files.index(file)
+    if index > len(files):
+        return 0
+    return index-1
+
+
+def transition_image(original_image, next_image):
+    for alpha in range(1, 11):
+        alpha = alpha/10.0
+        beta = 1 - alpha
+        cv2.imshow('showing_images', cv2.addWeighted(original_image, alpha, next_image, beta, 0.0))
+        time.sleep(0.1)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            return 0
+
+
 def display_images(files):
     for file in itertools.cycle(files):
         image = load(file)
-
+        index = get_next_image(file, files)
+        next_image = load(files[index])
         applied_image = apply(image)
+        applied_transition = apply(next_image)
 
         show(applied_image)
+        # TODO - refactor code
+        if transition_image(applied_image, applied_transition) == 0:
+            return
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
