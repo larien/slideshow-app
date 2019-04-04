@@ -2,6 +2,7 @@ import os
 import cv2
 import time
 import itertools
+import numpy as np
 
 repository = f"{os.getcwd()}/images"
 watermark_file = "watermark.png"
@@ -14,16 +15,22 @@ def get_files(path):
 
 
 def watermark(image):
+
     watermark = cv2.imread(watermark_file)
 
-    watermark_height, watermark_width = watermark.shape[:2]
-    image_height, image_width = image.shape[:2]
+    overlay = image.copy()
+    output = image.copy()
 
-    image[
+    watermark_height, watermark_width = watermark.shape[:2]
+    image_height, image_width = overlay.shape[:2]
+
+    overlay[
         image_height-watermark_height:image_height,
         0:watermark_width] = watermark
 
-    return image
+    cv2.addWeighted(overlay, 0.5, output, 1 - 0.5, 0, output)
+
+    return output
 
 
 def border(image):
